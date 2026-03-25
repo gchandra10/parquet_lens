@@ -1,6 +1,3 @@
-# app.py — Parquet File Architecture Explorer
-# Run with:  streamlit run app.py
-
 import streamlit as st
 import pyarrow.parquet as pq
 import pyarrow as pa
