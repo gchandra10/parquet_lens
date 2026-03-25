@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+/* ── Kill Streamlit's default top padding ───────────────────────────────────── */
+.block-container {
+    padding-top: 0.3rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+html, body, [class*="css"], .stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #FFFFFF;
+    color: #1A1A1A;
+}
+code, pre {
+    font-family: 'Roboto Mono', monospace !important;
+}
+.stApp {
+    background: #F8F9FA !important;
+}
+
+/* ── Hide sidebar entirely ───────────────────────────────────────────────── */
+section[data-testid="stSidebar"] { display: none !important; }
+button[kind="header"]             { display: none !important; }
+
+/* ── Hide Streamlit chrome ───────────────────────────────────────────────── */
+#MainMenu, footer, header { visibility: hidden; }
+
+/* ── Hide file uploader label & sub-label ────────────────────────────────── */
+div[data-testid="stFileUploader"] label,
+div[data-testid="stFileUploader"] small,
+div[data-testid="stFileUploader"] span.st-emotion-cache-9ycgxx,
+div[data-testid="stFileUploaderDropzoneInstructions"] small,
+div[data-testid="stFileUploaderDropzoneInstructions"] span {
+    display: none !important;
+}
+
+/* ── File uploader drop zone ─────────────────────────────────────────────── */
+div[data-testid="stFileUploader"] {
+    background: #FFFFFF;
+    border: 2px dashed #BDBDBD;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+div[data-testid="stFileUploader"]:hover {
+    border-color: #1A73E8;
+}
+
+/* ── Typography ──────────────────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+/* ── Metric cards ────────────────────────────────────────────────────────── */
+.metric-card {
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 4px 0;
+}
+
+/* ── Section header (tab content) ───────────────────────────────────────── */
+.section-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #5F6368;
+    margin: 24px 0 10px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1A73E8;
+}
+
+/* ── Info / callout box ─────────────────────────────────────────────────── */
+.info-box {
+    background: #E8F0FE;
+    border-left: 4px solid #1A73E8;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0 18px 0;
+    font-size: 0.9rem;
+    color: #1A1A1A;
+    line-height: 1.6;
+}
+
+/* ── Small badge / tag ──────────────────────────────────────────────────── */
+.tag {
+    display: inline-block;
+    background: #E8F0FE;
+    color: #1A73E8;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    border: 1px solid #C5D9FC;
+}
+
+/* ── Tabs — Google Material underline style ─────────────────────────────── */
+.stTabs [data-baseweb="tab-list"] {
+    background: transparent;
+    border-bottom: 2px solid #E0E0E0;
+    padding: 0;
+    gap: 0;
+}
+.stTabs [data-baseweb="tab"] {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #5F6368;
+    border-radius: 0;
+    padding: 10px 18px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    background: transparent;
+}
+.stTabs [aria-selected="true"] {
+    background: transparent !important;
+    color: #1A73E8 !important;
+    border-bottom: 3px solid #1A73E8 !important;
+    font-weight: 600 !important;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    color: #1A73E8 !important;
+    background: #F1F3F4 !important;
+}
+
+/* ── Dataframe ──────────────────────────────────────────────────────────── */
+.stDataFrame {
+    border-radius: 6px;
+    border: 1px solid #E0E0E0;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 20px 0;
+}
