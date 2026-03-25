@@ -648,11 +648,14 @@ def draw_compression_chart(info):
 
     x = np.arange(len(names))
 
+    WHITE = "#FFFFFF"
+    LABEL_BG = "#1A1D24"   # dark bg for both axes
+
     # ── Ratio bars
-    ax1.set_facecolor("#1A1D24")
+    ax1.set_facecolor(LABEL_BG)
     bcolors = [_accent(i) for i in range(len(names))]
     bars = ax1.bar(x, ratios, color=bcolors,
-                   edgecolor=BG, linewidth=0.8, width=0.65, zorder=3)
+                   edgecolor=LABEL_BG, linewidth=0.8, width=0.65, zorder=3)
     ax1.axhline(1.0, color="#EF5350", linewidth=1.5,
                 linestyle="--", zorder=4, label="1× (no gain)")
     for bar, r in zip(bars, ratios):
@@ -660,40 +663,42 @@ def draw_compression_chart(info):
                  bar.get_height() + 0.05,
                  f"{r:.1f}×",
                  ha="center", va="bottom", fontsize=8.5,
-                 color=C_TT, fontweight="bold", fontfamily="monospace")
+                 color=WHITE, fontweight="bold", fontfamily="monospace",
+                 zorder=5)
 
     ax1.set_xticks(x)
     ax1.set_xticklabels([n[:13] for n in names], rotation=30, ha="right",
-                        fontsize=8.5, color=C_TT, fontfamily="monospace")
-    ax1.set_ylabel("Compression Ratio (×)", color=C_MU,
+                        fontsize=8.5, color=WHITE, fontfamily="monospace")
+    ax1.set_ylabel("Compression Ratio (×)", color=WHITE,
                    fontsize=9, fontfamily="monospace")
     ax1.set_title("Per-Column Compression Ratio & Space Savings",
-                  color=C_TT, fontsize=12, fontfamily="monospace",
+                  color=WHITE, fontsize=12, fontfamily="monospace",
                   fontweight="bold", pad=10)
-    ax1.tick_params(colors=C_MU, labelsize=8)
-    ax1.legend(fontsize=8, facecolor="#1A1D24",
-               edgecolor="#2E3240", labelcolor=C_TT)
-    for sp in ax1.spines.values(): sp.set_edgecolor("#2E3240")
-    ax1.grid(axis="y", color="#2E3240", linewidth=0.7, zorder=0)
+    ax1.tick_params(colors=WHITE, labelsize=8, labelcolor=WHITE)
+    ax1.legend(fontsize=8, facecolor=LABEL_BG,
+               edgecolor="#444", labelcolor=WHITE)
+    for sp in ax1.spines.values(): sp.set_edgecolor("#444")
+    ax1.grid(axis="y", color="#333", linewidth=0.7, zorder=0)
     ax1.set_axisbelow(True)
 
     # ── Savings %
-    ax2.set_facecolor("#1A1D24")
+    ax2.set_facecolor(LABEL_BG)
     cmap = LinearSegmentedColormap.from_list(
         "sv", ["#EF5350", "#FFA726", "#66BB6A"])
-    scolors = [cmap(s / 100) for s in savings]
+    scolors = [cmap(max(0, min(s, 100)) / 100) for s in savings]
     ax2.bar(x, savings, color=scolors,
-            edgecolor=BG, linewidth=0.5, zorder=3)
+            edgecolor=LABEL_BG, linewidth=0.5, zorder=3)
     for xi, sv in zip(x, savings):
-        ax2.text(xi, sv + 0.5, f"{sv:.0f}%",
+        ax2.text(xi, max(sv, 0) + 0.5, f"{sv:.0f}%",
                  ha="center", va="bottom", fontsize=7.5,
-                 color=C_TT, fontfamily="monospace")
+                 color=WHITE, fontweight="bold", fontfamily="monospace",
+                 zorder=5)
     ax2.set_xticks(x)
     ax2.set_xticklabels([])
-    ax2.set_ylabel("Savings %", color=C_MU, fontsize=8, fontfamily="monospace")
-    ax2.tick_params(colors=C_MU)
-    for sp in ax2.spines.values(): sp.set_edgecolor("#2E3240")
-    ax2.grid(axis="y", color="#2E3240", linewidth=0.7, zorder=0)
+    ax2.set_ylabel("Savings %", color=WHITE, fontsize=8, fontfamily="monospace")
+    ax2.tick_params(colors=WHITE, labelcolor=WHITE)
+    for sp in ax2.spines.values(): sp.set_edgecolor("#444")
+    ax2.grid(axis="y", color="#333", linewidth=0.7, zorder=0)
     ax2.set_axisbelow(True)
 
     plt.tight_layout(pad=0.6)

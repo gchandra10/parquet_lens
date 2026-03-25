@@ -1,7 +1,7 @@
 [project]
-name = "parquet-viewer"
+name = "parquet-lens"
 version = "0.1.0"
-description = "Add your description here"
+description = "App to view the contents of Parquet files and generate insights using LLMs."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

@@ -21,7 +21,7 @@ from diagrams import (
 )
 
 # ── Config ────────────────────────────────────────────────────────────────────
-MAX_BYTES = 1 * 100 * 1024 * 1024
+MAX_BYTES = 1 * 1024 * 1024 * 1024
 st.set_page_config(
     page_title="Parquet File Explorer",
     page_icon="🗂️",
@@ -608,17 +608,22 @@ def page_read_cost(info, file_size):
     m3.metric("Parquet saves",   bytes_human(row_bytes - pq_bytes))
     m4.metric("I/O reduction",   f"{saving:.0f}%")
 
-    fig, ax = plt.subplots(figsize=(9, 3))
+    fig, ax = plt.subplots(figsize=(9, 3.2))
     fig.patch.set_facecolor("#F8F9FA"); ax.set_facecolor("#FFFFFF")
-    bar_vals = [row_bytes/1024**2, pq_bytes/1024**2]
-    bar_cols = ["#E0E0E0", "#1A73E8"]
-    bar_labs = [f"Row-based\n{bytes_human(row_bytes)}", f"Parquet\n{bytes_human(pq_bytes)}"]
-    ax.barh([1,0], bar_vals, color=bar_cols, edgecolor="white", height=0.5)
-    ax.set_yticks([0,1]); ax.set_yticklabels(bar_labs, fontsize=11, fontfamily="monospace")
+    # index 0 = bottom bar = Parquet (blue), index 1 = top bar = Row-based (grey)
+    bar_vals = [pq_bytes/1024**2,  row_bytes/1024**2]
+    bar_cols = ["#1A73E8",         "#BDBDBD"]
+    bar_labs = [f"Parquet\n{bytes_human(pq_bytes)}",
+                f"Row-based (CSV/JSON)\n{bytes_human(row_bytes)}"]
+    ax.barh([0, 1], bar_vals, color=bar_cols, edgecolor="white", height=0.5)
+    ax.set_yticks([0, 1])
+    ax.set_yticklabels(bar_labs, fontsize=10, fontfamily="monospace", color="#1A1A1A")
     ax.set_xlabel("MB read from disk", color="#5F6368", fontsize=9)
-    for b, v in zip(ax.patches, bar_vals):
-        ax.text(b.get_width()+0.3, b.get_y()+b.get_height()/2,
-                f"{v:.1f} MB", va="center", fontsize=10, fontweight="bold", fontfamily="monospace")
+    for bar, v in zip(ax.patches, bar_vals):
+        ax.text(bar.get_width() + max(bar_vals)*0.01,
+                bar.get_y() + bar.get_height()/2,
+                f"{v:.1f} MB", va="center", fontsize=10,
+                fontweight="bold", color="#1A1A1A", fontfamily="monospace")
     for sp in ax.spines.values(): sp.set_edgecolor("#E0E0E0")
     ax.grid(axis="x", color="#E0E0E0", linewidth=0.7); ax.set_axisbelow(True)
     plt.tight_layout(); show_fig(fig)
@@ -994,8 +999,8 @@ def main():
 <div style="font-size:0.8rem;color:#5F6368;font-family:Inter,sans-serif;margin-bottom:6px;">
   📂 Drop your <code style="background:#F1F3F4;padding:1px 5px;border-radius:3px;
   font-size:0.78rem;">.parquet</code> file &nbsp;·&nbsp;
-  <span style="color:#E37400;">⚠ Best under 75 MB for speed</span>
-  &nbsp;·&nbsp; Max 100 MB accepted
+  <span style="color:#E37400;">⚠ Best under 200 MB for speed</span>
+  &nbsp;·&nbsp; Max 1 GB accepted
 </div>""", unsafe_allow_html=True)
 
     uploaded = st.file_uploader(" ", type=["parquet"],
@@ -1017,7 +1022,7 @@ def main():
         file_bytes = uploaded.read()
         file_size  = len(file_bytes)
         if file_size > MAX_BYTES:
-            st.error(f"File too large: {bytes_human(file_size)}. Maximum is 100 MB.")
+            st.error(f"File too large: {bytes_human(file_size)}. Maximum is 1 GB.")
             return
 
         with st.spinner("Reading Parquet metadata…"):
