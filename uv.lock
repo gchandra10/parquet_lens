@@ -598,7 +598,7 @@ wheels = [
 ]
 
 [[package]]
-name = "parquet-viewer"
+name = "parquet-lens"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
